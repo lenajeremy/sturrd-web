@@ -1,33 +1,36 @@
 import { getServerSession } from 'next-auth'
 import { PrismaClient } from '@prisma/client'
-import { NextApiRequest, NextApiResponse } from 'next'
 import config from '@/auth'
+import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: NextRequest, res: NextResponse) {
 
-    console.log(req, res)
-    const session = await getServerSession(req as unknown as NextApiRequest, res as unknown as NextApiResponse, config)
+    const session = await getServerSession(config)
 
-    if (!session) return Response.json({ message: "Unauthorized" }, { status: 401 })
+    const userName = req.nextUrl.searchParams.get('name')
+
+    if (!userName) return NextResponse.json({ message: "Invalid Name Field - Please send a valid string" }, { status: 401 })
+
+    if (!session) return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
 
     try {
         const res = await prisma.user.update({
             where: {
-                email: "jeremiahlena13@gmail.com"
+                email: session.user?.email || ""
             },
             data: {
-                name: "Jeremiah Lena",
+                name: userName,
                 image: "https://images.unsplash.com/photo-1696792995093-cf7e39a97349"
             }
         })
 
         console.log(res)
 
-        return Response.json({ data: res, message: "Successfully updated user" }, { status: 200 })
+        return NextResponse.json({ data: res, message: "Successfully updated user" }, { status: 200 })
     } catch (error) {
-        return Response.json({ data: String(error), message: "Could not update user" }, { status: 400 })
+        return NextResponse.json({ data: String(error), message: "Could not update user" }, { status: 400 })
     }
 }
