@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { PrismaClient } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
+import config from '@/auth'
 
 const prisma = new PrismaClient()
 
@@ -8,7 +9,7 @@ const prisma = new PrismaClient()
 export async function GET(req: NextApiRequest, res: NextApiResponse) {
 
     console.log(req, res)
-    const session = await getServerSession(req, res)
+    const session = await getServerSession(req, res, config)
 
     if (!session) return Response.json({ message: "Unauthorized" }, { status: 401 })
 
