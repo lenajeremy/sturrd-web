@@ -6,10 +6,10 @@ import config from '@/auth'
 const prisma = new PrismaClient()
 
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: Request, res: Response) {
 
     console.log(req, res)
-    const session = await getServerSession(req, res, config)
+    const session = await getServerSession(req as unknown as NextApiRequest, res as unknown as NextApiResponse, config)
 
     if (!session) return Response.json({ message: "Unauthorized" }, { status: 401 })
 
