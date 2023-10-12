@@ -120,15 +120,17 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName
 // }
 
 
-type SelectProps<T> = {
+type SelectProps<T, V> = {
   options: Array<T>
-  onChange: (value: string) => void
+  onChange: (value: V) => void
   renderLabel: (item: T) => string
-  renderValue: (item: T) => string
+  renderValue: (item: T) => V
   className?: string
   placeholder?: string
 }
-function Select<T>({ options, renderLabel, renderValue, className, placeholder, onChange }: SelectProps<T>) {
+
+
+function Select<T, V extends string>({ options, renderLabel, renderValue, className, placeholder, onChange }: SelectProps<T, V>) {
   return (
     <_Select onValueChange={onChange}>
       <SelectTrigger className={cn("w-[180px]", className)}>

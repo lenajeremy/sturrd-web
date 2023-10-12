@@ -8,19 +8,24 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { status, data: session } = useSession()
     const pathName = usePathname()
 
-    if (pathName === '/auth/signin' || pathName === '/setup-account') return children
 
-    if (status === 'unauthenticated') {
-        console.log('this user is not authenticated', session, status)
-        redirect('/auth/signin')
-    }
+    React.useEffect(() => {
 
-    if (session?.user.userType === UserTypes.BASE_USER) {
-        redirect('/setup-account')
-    }
+        if (pathName === '/auth/signin' || pathName === '/setup-account') return
+
+        if (status === "unauthenticated") {
+            redirect("/auth/signin")
+            return
+        }
+
+        if (session?.user.userType === UserTypes.BASE_USER) {
+            redirect('/setup-account')
+            return 
+        }
+
+    }, [ status, pathName, session ])
 
     return children
 }
 
 export default ProtectedRoute
-// /fs

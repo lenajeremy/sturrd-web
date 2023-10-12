@@ -20,7 +20,7 @@ function Signin() {
 
     const { register, handleSubmit, setValue, watch } = useForm<SignInFormValues>()
     const [loading, setLoading] = React.useState<boolean>(false)
-    const {data} = useSession()
+    const {status} = useSession()
 
     const acceptsTerms = watch('acceptTerms')
 
@@ -83,8 +83,6 @@ function Signin() {
                     <SturrdLogo size={84} color='black' />
                     <p className='w-3/4 text-muted-foreground'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
                 </div>
-
-                <pre>{JSON.stringify(data, null, 3)}</pre>
 
                 <form className='w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
                     <div className='space-y-1'>
