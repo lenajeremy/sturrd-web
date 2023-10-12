@@ -35,6 +35,7 @@ const config: AuthOptions = {
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
         session(params) {
+            console.log(params)
             const newSession = {...params.session, user: params.user}
             return newSession
         },
