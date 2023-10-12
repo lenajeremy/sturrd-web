@@ -6,24 +6,26 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { Select } from '@/components/ui/select'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useToast } from '@/components/ui/use-toast'
-import { ToastAction } from '@/components/ui/toast'
+import { Checkbox } from '@/components/ui/checkbox'
 
 
 type SignInFormValues = {
     email: string
-    userType: 'student' | 'school administrator' | 'teacher' | 'parent'
+    acceptTerms: boolean
 }
 
 function Signin() {
 
     const { toast } = useToast()
-    const { register, handleSubmit, setValue } = useForm<SignInFormValues>()
+    const { register, handleSubmit, setValue, watch } = useForm<SignInFormValues>()
     const [loading, setLoading] = React.useState<boolean>(false)
 
+    const acceptsTerms = watch('acceptTerms')
+
     const handleLogin: SubmitHandler<SignInFormValues> = async (values) => {
+
         setLoading(true)
         try {
             let res = await signIn('email', { email: values.email, callbackUrl: '/', redirect: false })
@@ -39,9 +41,6 @@ function Signin() {
                     description: "A login link has been sent to your email address. Click to the link to log in to Sturrd",
                 })
             }
-
-
-
         } catch (error) {
             // handleError()
         } finally {
@@ -67,7 +66,7 @@ function Signin() {
 
                     <div>
                         <div className='space-y-4'>
-                            <h1 className='w-2/3'>School Management Made Simple</h1>
+                            <h1 className='w-2/5'>School Management Made Simple</h1>
                             <p className='text-[#CACACA] w-[60%] text-lg'>Simplify School Management with Sturrd. Streamline tasks, enhance communication, and enjoy a smarter school experience.</p>
                         </div>
                         <div className='flex gap-2 mt-8'>
@@ -92,23 +91,11 @@ function Signin() {
                         <Label htmlFor='email'>Email</Label>
                         <Input placeholder='Enter your email address' type='email' {...register("email", { required: true })} />
                     </div>
-
-                    <div className='space-y-1'>
-                        <Label htmlFor='email'>What best describes you?</Label>
-                        <Select className='w-full'
-                            placeholder='Select an option'
-                            renderLabel={(key) => key}
-                            renderValue={key => key}
-                            onChange={v => setValue('userType', v as SignInFormValues['userType'])}
-                            options={[
-                                "School Owner",
-                                "School Administrator",
-                                "Teacher/Educator",
-                                "Parent",
-                                "Student"
-                            ]} />
+                    <div className='flex gap-2 items-start'>
+                        <Checkbox onCheckedChange={(e) => setValue('acceptTerms', Boolean(e))} className='mt-1' id='acceptTerms' />
+                        <Label htmlFor='acceptTerms' className='text-sm text-muted-placeholder text-[12px] w-[90%]'>By checking this box, you agree to receive email from Sturrd, accept our terms and conditions</Label>
                     </div>
-                    <Button loading={loading} className='w-full mt-4'>Continue</Button>
+                    <Button disabled = {loading || !acceptsTerms} loading={loading} className='w-full mt-4'>Continue</Button>
                 </form>
 
             </div>

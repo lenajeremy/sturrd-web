@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, UserTypes } from '@prisma/client'
 import config from '@/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -28,6 +28,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
         })
 
         console.log(res)
+
+        prisma.user.update({
+            where: {
+                id: 'customId'
+            },
+            data: {
+                userType: 'STUDENT'
+            }
+        })
 
         return NextResponse.json({ data: res, message: "Successfully updated user" }, { status: 200 })
     } catch (error) {
