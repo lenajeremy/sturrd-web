@@ -1,11 +1,14 @@
 'use client'
 
 import { SessionProvider } from "next-auth/react";
+import ProtectedRoute from "@/components/protected-route";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <SessionProvider>
-            {children}
+            <ProtectedRoute>
+                {children}
+            </ProtectedRoute>
         </SessionProvider>
     )
 }

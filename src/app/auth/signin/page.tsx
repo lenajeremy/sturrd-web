@@ -1,13 +1,13 @@
 'use client'
 import * as React from 'react'
-import { signIn } from 'next-auth/react'
+import { toast } from 'sonner'
+import { signIn, useSession } from 'next-auth/react'
 import SturrdLogo from '@/components/assets/logo'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useToast } from '@/components/ui/use-toast'
 import { Checkbox } from '@/components/ui/checkbox'
 
 
@@ -18,9 +18,9 @@ type SignInFormValues = {
 
 function Signin() {
 
-    const { toast } = useToast()
     const { register, handleSubmit, setValue, watch } = useForm<SignInFormValues>()
     const [loading, setLoading] = React.useState<boolean>(false)
+    const {data} = useSession()
 
     const acceptsTerms = watch('acceptTerms')
 
@@ -31,13 +31,11 @@ function Signin() {
             let res = await signIn('email', { email: values.email, callbackUrl: '/', redirect: false })
 
             if (res?.error) {
-                toast({
-                    title: "Error",
+                toast.error("Error", {
                     description: "Failed to send email login link. Please try again later.",
                 })
             } else {
-                toast({
-                    title: "Email sent",
+                toast.success("Email sent", {
                     description: "A login link has been sent to your email address. Click to the link to log in to Sturrd",
                 })
             }
@@ -86,6 +84,8 @@ function Signin() {
                     <p className='w-3/4 text-muted-foreground'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
                 </div>
 
+                <pre>{JSON.stringify(data, null, 3)}</pre>
+
                 <form className='w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
                     <div className='space-y-1'>
                         <Label htmlFor='email'>Email</Label>
@@ -95,7 +95,7 @@ function Signin() {
                         <Checkbox onCheckedChange={(e) => setValue('acceptTerms', Boolean(e))} className='mt-1' id='acceptTerms' />
                         <Label htmlFor='acceptTerms' className='text-sm text-muted-placeholder text-[12px] w-[90%]'>By checking this box, you agree to receive email from Sturrd, accept our terms and conditions</Label>
                     </div>
-                    <Button disabled = {loading || !acceptsTerms} loading={loading} className='w-full mt-4'>Continue</Button>
+                    <Button disabled={loading || !acceptsTerms} loading={loading} className='w-full mt-4'>Continue</Button>
                 </form>
 
             </div>

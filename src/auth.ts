@@ -32,7 +32,13 @@ const config: AuthOptions = {
         signIn: "auth/signin",
         verifyRequest: '/auth/verify-request'
     },
-    secret: process.env.NEXT_AUTH_SECRET
+    secret: process.env.NEXT_AUTH_SECRET,
+    callbacks: {
+        session(params) {
+            const newSession = {...params.session, user: params.user}
+            return newSession
+        },
+    }
 }
 
 
