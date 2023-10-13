@@ -33,6 +33,8 @@ CREATE TABLE "Session" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT,
+    "firstName" TEXT,
+    "lastName" TEXT,
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "userType" "UserTypes" NOT NULL DEFAULT 'BASE_USER',

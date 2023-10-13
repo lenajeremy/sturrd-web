@@ -49,7 +49,7 @@ function Signin() {
 
     return (
         <div className='flex h-screen'>
-            <div className='w-[60%] h-full relative'>
+            <div className='hidden md:block md:w-[60%]  h-full relative'>
                 <Image
                     width={1000}
                     height={1000}
@@ -78,13 +78,13 @@ function Signin() {
                 </div>
             </div>
 
-            <div className='w-[40%] h-full flex flex-col justify-center gap-12 p-8'>
-                <div className='space-y-3'>
+            <div className='w-full md:w-[40%] h-full flex flex-col justify-center gap-12 p-8'>
+                <div className='space-y-3 flex items-center flex-col md:items-start'>
                     <SturrdLogo size={84} color='black' />
-                    <p className='w-3/4 text-muted-foreground'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
+                    <p className='text-center md:text-left w-5/6 md:w-3/4 text-muted-foreground'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
                 </div>
 
-                <form className='w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
+                <form className='w-full md:w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
                     <div className='space-y-1'>
                         <Label htmlFor='email'>Email</Label>
                         <Input placeholder='Enter your email address' type='email' {...register("email", { required: true })} />

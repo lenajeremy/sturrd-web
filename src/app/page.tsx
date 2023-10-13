@@ -7,6 +7,7 @@ import Image from "next/image"
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 
 export default function Home() {
 
@@ -27,26 +28,31 @@ export default function Home() {
 
   return (
     <main>
-      <header className="flex items-center justify-between p-4">
-        <SturrdLogo size={84} color="black" />
-        <div className="flex gap-2 items-center">
-          <Image priority src={session?.user?.image || "/images/auth-bg-image.jpeg"} alt="User Image" width={48} height={48} className="rounded-full h-10 w-10" />
+      <header className="flex items-center justify-between p-4 mb-6 border-b">
+        <SturrdLogo size={60} color="black" />
+        <HamburgerMenuIcon width={24} height={24} />
+      </header>
+      <div className='p-4 space-y-8'>
+        <div className="flex gap-2 justify-between items-center">
+          <Image priority src={session?.user?.image || "/images/auth-bg-image.jpeg"} alt="User Image" width={32} height={32} className="rounded-full h-8 w-8" />
           <div>
             <div className='flex gap-1'>
-              <p>{session?.user?.name}</p>
+              <Link href={'/details'}>
+                <p>{session?.user?.name}</p>
+              </Link>
               <small className='text-[10px] p-1 rounded-full bg-green-500 text-white'>{session?.user.userType}</small>
             </div>
             <p className='text-sm text-muted-placeholder'>{session?.user?.email}</p>
-            <button onClick={() => signOut()}>Signout</button> <br />
           </div>
         </div>
-      </header>
-      <div className='w-96'>
-        <Input placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} />
-        <Button className='w-full' loading={loading} onClick={() => editUserDetails()}>Edit Name</Button>
-      </div>
 
-      <Link href={'/details'}>Go to details</Link>
-    </main>
+        <div className='space-y-4'>
+          <Input placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} className='w-full' />
+          <Button className='w-full' loading={loading} onClick={() => editUserDetails()}>Edit Name</Button>
+        </div>
+
+        <Button variant={'secondary'} size={'sm'} onClick={() => signOut()}>Signout</Button> <br />
+      </div>
+    </main >
   )
 }

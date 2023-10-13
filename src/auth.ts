@@ -1,7 +1,8 @@
-import { AuthOptions } from "next-auth"
+import { AuthOptions, type Session } from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { sendEmail } from "@/app/api/auth/mailjet"
 import prisma from "@/utils/db"
+import { getUserFullName } from "@/utils/shared"
 
 
 const config: AuthOptions = {
@@ -24,15 +25,14 @@ const config: AuthOptions = {
             }
         }
     ],
-    pages: {
+    pages: { 
         signIn: "auth/signin",
         verifyRequest: '/auth/verify-request'
     },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
-        session(params) {
-            console.log(params)
-            const newSession = {...params.session, user: params.user}
+        session({ session, user }) {
+            const newSession = { ...session, user: { ...user, name: getUserFullName(user as Session['user']) } }
             return newSession
         },
     }

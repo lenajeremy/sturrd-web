@@ -36,11 +36,13 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?     @unique
+  firstName     String?
+  lastName      String?
+  email         String?      @unique
   emailVerified DateTime?
-  userType      UserTypes   @default(BASE_USER)
+  userType      UserTypes    @default(BASE_USER)
   image         String?
   accounts      Account[]
   sessions      Session[]

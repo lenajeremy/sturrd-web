@@ -5,7 +5,9 @@ import { type UserTypes } from "@prisma/client"
 declare module "next-auth" {
   interface Session {
     user: AdapterUser & {
-        userType: UserTypes
+        userType: UserTypes,
+        firstName: string | null,
+        lastName: string | null
     }
   }
 }
