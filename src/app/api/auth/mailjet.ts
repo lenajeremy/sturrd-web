@@ -34,7 +34,6 @@ export async function sendEmail(emailAddress: string, textContent: string, htmlC
                 console.log("Message sent successfully")
             }
 
-        // console.log(request.body, request)
     } catch (error) {
         // @ts-ignore
         console.log(error.statusCode)

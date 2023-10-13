@@ -1,29 +1,35 @@
 'use client'
 import * as React from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { UserTypes } from '@prisma/client'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { status, data: session } = useSession()
+    const router = useRouter()
     const pathName = usePathname()
 
 
     React.useEffect(() => {
 
-        if (pathName === '/auth/signin' || pathName === '/setup-account') return
+        if (status === 'authenticated') {
+            if (pathName === '/auth/signin') {
+                router.replace('/')
+            } else if (pathName === '/setup-account' && session.user.userType !== UserTypes.BASE_USER) {
+                router.replace('/')
+            }
+        } else if (status === 'unauthenticated') {
+            router.replace('/auth/signin')
+        }
 
-        if (status === "unauthenticated") {
-            redirect("/auth/signin")
+
+        if (session?.user.userType === UserTypes.BASE_USER) {
+            router.replace('/setup-account')
             return
         }
 
-        if (session?.user.userType === UserTypes.BASE_USER) {
-            redirect('/setup-account')
-            return 
-        }
-
-    }, [ status, pathName, session ])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [status, pathName, session])
 
     return children
 }

@@ -105,6 +105,18 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 -- CreateIndex
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "SchoolAdmin_schoolId_key" ON "SchoolAdmin"("schoolId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "SchoolAdmin_userId_key" ON "SchoolAdmin"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Parent_userId_key" ON "Parent"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Student_userId_key" ON "Student"("userId");
+
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 

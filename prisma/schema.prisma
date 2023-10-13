@@ -36,17 +36,17 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?       @unique
+  email         String?     @unique
   emailVerified DateTime?
-  userType      UserTypes     @default(BASE_USER)
+  userType      UserTypes   @default(BASE_USER)
   image         String?
   accounts      Account[]
   sessions      Session[]
-  SchoolAdmin   SchoolAdmin[]
-  Parent        Parent[]
-  Student       Student[]
+  schoolAdmin   SchoolAdmin?
+  parent        Parent?
+  student       Student?
 }
 
 model VerificationToken {
@@ -58,34 +58,34 @@ model VerificationToken {
 }
 
 model School {
-  id            String        @id @default(cuid())
-  longName      String
-  shortName     String?
-  address       String?
-  city          String?
-  state         String?
-  admins        SchoolAdmin[]
-  students      Student[]
-  parents       Parent[]
-  superAdminId  String?
+  id           String        @id @default(cuid())
+  longName     String
+  shortName    String?
+  address      String?
+  city         String?
+  state        String?
+  admins       SchoolAdmin[]
+  students     Student[]
+  parents      Parent[]
+  superAdminId String?
 }
 
 model SchoolAdmin {
   id           String  @id @default(cuid())
   user         User    @relation(fields: [userId], references: [id])
   school       School  @relation(fields: [schoolId], references: [id])
-  schoolId     String
-  userId       String
+  schoolId     String  @unique
+  userId       String  @unique
   isSuperAdmin Boolean @default(false)
 }
 
 model Parent {
   id       String    @id @default(cuid())
   user     User      @relation(fields: [userId], references: [id])
+  school   School?   @relation(fields: [schoolId], references: [id])
   children Student[]
-  School   School?   @relation(fields: [schoolId], references: [id])
   schoolId String?
-  userId   String
+  userId   String    @unique
 }
 
 model Student {
@@ -93,7 +93,7 @@ model Student {
   user     User    @relation(fields: [userId], references: [id])
   school   School  @relation(fields: [schoolId], references: [id])
   parent   Parent? @relation(fields: [parentId], references: [id])
-  userId   String
+  userId   String  @unique
   schoolId String
   parentId String?
 }

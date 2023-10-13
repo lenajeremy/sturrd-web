@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { handleServerSession } from "@/utils/api";
+import prisma from "@/utils/db";
+import { UserTypes } from "@prisma/client";
 
-const prisma = new PrismaClient()
 
 export async function POST(request: NextRequest, response: NextResponse) {
 
@@ -10,7 +10,13 @@ export async function POST(request: NextRequest, response: NextResponse) {
         const userId = session.user.id
         const userType = (await request.json()).accountType
 
-        console.log(userType, userId)
+        if (session.user.userType !== UserTypes.BASE_USER) {
+            return NextResponse.json({
+                message: "Account type has already been set",
+                data: null,
+                errors: ["Unable to change account type"]
+            }, { status: 403 })
+        }
 
         const user = await prisma.user.update({
             where: { id: userId },
