@@ -46,7 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, loading, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
-      <div className="relative">
+      <div className="relative overflow-clip">
         <Comp
           className={cn(buttonVariants({ variant, size, className }))}
           ref={ref}

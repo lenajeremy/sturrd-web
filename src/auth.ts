@@ -15,24 +15,19 @@ const config: AuthOptions = {
             options: {
                 type: "email",
                 async sendVerificationRequest(params) {
-
                     await sendEmail(params.identifier, "", "", params.url)
-
-                    return new Promise(res => {
-                        setTimeout(res, 1000)
-                    })
                 },
             }
         }
     ],
-    pages: { 
+    pages: {
         signIn: "auth/signin",
         verifyRequest: '/auth/verify-request'
     },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
         session({ session, user }) {
-            const newSession = { ...session, user: { ...user, name: getUserFullName(user as Session['user']) } }
+            const newSession = { ...session, user }
             return newSession
         },
     }

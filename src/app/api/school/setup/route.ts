@@ -1,32 +1,19 @@
 import { handleServerSession } from "@/utils/api";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/utils/db";
+import { ZodError } from 'zod'
+import { schoolObject } from '@/types/z'
+import { UserTypes } from "@prisma/client";
 
-type SchoolBody = {
-    longName: string
-    shortName: string
-    address: string
-    city: string
-    state: string
-}
 
-function verifyRequestBody(body: any): body is SchoolBody {
-    if (!body.longName) return false
-    if (!body.shortName) return false
-    if (!body.address) return false
-    if (!body.city) return false
-    if (!body.state) return false
 
-    return true
-}
-
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest) {
 
     return handleServerSession(async (session) => {
 
-        const data = (await request.json())
+        const requestBody = (await request.json())
 
-        if (session.user.userType !== 'SCHOOL_ADMIN') {
+        if (session.user.userType !== UserTypes.SCHOOL_OWNER) {
             return Response.json({
                 message: "You don't have permission to perform this action",
                 data: null,
@@ -35,40 +22,36 @@ export async function POST(request: NextRequest, response: NextResponse) {
             )
         }
 
-        if (verifyRequestBody(data)) {
-            try {
-                const school = await prisma.school.create({
-                    data: {
-                        longName: data.longName,
-                        shortName: data.shortName,
-                        address: data.address,
-                        city: data.city,
-                        state: data.state,
-                        admins: {
-                            create: {
-                                user: {
-                                    connect: {
-                                        id: session.user.id
-                                    }
-                                },
-                                isSuperAdmin: true
-                            }
-                        },
-                        superAdminId: session.user.id,
-                    }
-                })
 
-                return Response.json({ message: "School created successfully", data: school, errors: [] }, { status: 200 })
-            } catch (error) {
-                return Response.json({
-                    message: "School admins cannot create multiple schools",
-                    data: null,
-                    errors: ["School instance assigned to admin"]
-                }, { status: 403 })
+        try {
+            const data = schoolObject.parse(requestBody)
+
+            const schoolOwner = await prisma.schoolOwner.findFirst({
+                where: {
+                    userId: session.user.id
+                }
+            })
+
+            const school = await prisma.school.update({
+                where: {
+                    ownerId: schoolOwner?.id
+                },
+                data: {
+                    longName: data.longName,
+                    shortName: data.shortName,
+                    address: data.address,
+                    city: data.city,
+                    state: data.state
+                }
+            })
+
+            return Response.json({ message: "School created successfully", data: school, errors: [] }, { status: 200 })
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return NextResponse.json({ message: "Invalid Request body", data: null, errors: ["Invalid request body"] }, { status: 400 })
+            } else {
+                return NextResponse.json({ message: "Error when updating school details - Unknown Error", data: null, errors: [error] }, { status: 403 })
             }
-        } else {
-            return Response.json({ message: "Invalid Request body", data: null, errors: ["Invalid request body"] }, { status: 400 })
         }
-
     })
 }

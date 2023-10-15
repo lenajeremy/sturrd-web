@@ -2,14 +2,18 @@
 
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "@/components/protected-route";
+import { Provider as StoreProvider } from "react-redux";
+import store from '@/store'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
-        <SessionProvider>
-            <ProtectedRoute>
-                {children}
-            </ProtectedRoute>
-        </SessionProvider>
+        <StoreProvider store={store}>
+            <SessionProvider>
+                <ProtectedRoute>
+                    {children}
+                </ProtectedRoute>
+            </SessionProvider>
+        </StoreProvider>
     )
 }
 

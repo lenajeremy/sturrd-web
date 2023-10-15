@@ -36,19 +36,21 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  firstName     String?
-  lastName      String?
-  email         String?      @unique
-  emailVerified DateTime?
-  userType      UserTypes    @default(BASE_USER)
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  schoolAdmin   SchoolAdmin?
-  parent        Parent?
-  student       Student?
+  id                  String        @id @default(cuid())
+  name                String?
+  firstName           String?
+  lastName            String?
+  email               String?       @unique
+  emailVerified       DateTime?
+  userType            UserTypes     @default(BASE_USER)
+  image               String?
+  accounts            Account[]
+  sessions            Session[]
+  schoolAdmin         SchoolAdmin[]
+  parent              Parent?
+  student             Student?
+  staff               Staff?
+  schoolOwner         SchoolOwner?
 }
 
 model VerificationToken {
@@ -69,40 +71,106 @@ model School {
   admins       SchoolAdmin[]
   students     Student[]
   parents      Parent[]
-  superAdminId String?
+  classes      Class[]
+  courses      Course[]
+  staffs       Staff[]
+  owner        SchoolOwner   @relation(fields: [ownerId], references: [id])
+  ownerId      String        @unique
+}
+
+// Typically, this is a school owner (or a super admin)
+// This is the person who creates the school and can add other admins
+model SchoolOwner {
+  id     String  @id @default(cuid())
+  user   User    @relation(fields: [userId], references: [id])
+  userId String  @unique
+  school School?
 }
 
 model SchoolAdmin {
-  id           String  @id @default(cuid())
-  user         User    @relation(fields: [userId], references: [id])
-  school       School  @relation(fields: [schoolId], references: [id])
-  schoolId     String  @unique
-  userId       String  @unique
-  isSuperAdmin Boolean @default(false)
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
+  school   School @relation(fields: [schoolId], references: [id])
+  schoolId String @unique
+}
+
+model Staff {
+  id              String   @id @default(cuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String   @unique
+  isTeachingStaff Boolean  @default(false)
+  school          School   @relation(fields: [schoolId], references: [id])
+  schoolId        String   @unique
+  teacher         Teacher?
+}
+
+model Teacher {
+  id      String   @id @default(cuid())
+  staff   Staff    @relation(fields: [staffId], references: [id])
+  staffId String   @unique
+  // a teacher can teach more than one course
+  courses Course[]
+  // a teacher can be assigned to oversee more than one class
+  // - it's highly unlikely but possible
+  class   Class[]
 }
 
 model Parent {
   id       String    @id @default(cuid())
   user     User      @relation(fields: [userId], references: [id])
   school   School?   @relation(fields: [schoolId], references: [id])
+  // a parent can have more than one child
   children Student[]
   schoolId String?
   userId   String    @unique
 }
 
 model Student {
-  id       String  @id @default(cuid())
-  user     User    @relation(fields: [userId], references: [id])
-  school   School  @relation(fields: [schoolId], references: [id])
-  parent   Parent? @relation(fields: [parentId], references: [id])
-  userId   String  @unique
+  id       String   @id @default(cuid())
+  user     User     @relation(fields: [userId], references: [id])
+  // every student MUST necessarily belong to a school
+  // because school admins would be creating the students from the portal
+  school   School   @relation(fields: [schoolId], references: [id])
+  parent   Parent?  @relation(fields: [parentId], references: [id])
+  userId   String   @unique
   schoolId String
   parentId String?
+  courses  Course[]
+}
+
+model Course {
+  id       String    @id @default(cuid())
+  name     String
+  // multiple teachers can teach a course
+  teacher  Teacher[]
+  students Student[]
+  School   School?   @relation(fields: [schoolId], references: [id])
+  schoolId String?
+}
+
+model Class {
+  id              String            @id @default(cuid())
+  name            String
+  classTeacher    Teacher           @relation(fields: [classTeacherId], references: [id])
+  classTeacherId  String            @unique
+  schoolClassArms SchoolClassArms[]
+  School          School?           @relation(fields: [schoolId], references: [id])
+  schoolId        String?
+}
+
+model SchoolClassArms {
+  id      String  @id @default(cuid())
+  name    String
+  classes Class[]
 }
 
 enum UserTypes {
   BASE_USER
-  SCHOOL_ADMIN
-  STUDENT
   PARENT
+  STUDENT
+  SCHOOL_ADMIN
+  SCHOOL_OWNER
+  SCHOOL_STAFF
+  TEACHER
 }

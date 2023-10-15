@@ -18,12 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={inter.className}>
+      <body className={inter.className}>
+        <Providers>
           {children}
           <Toaster richColors />
-        </body>
-      </Providers>
+        </Providers>
+      </body>
     </html>
   )
 }
