@@ -1,1 +1,1 @@
-export const BASE_URL = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/api`
+export const BASE_URL = `https://sturrd.vercel.app/api`
