@@ -2,17 +2,18 @@
 import * as React from 'react'
 import SturrdLogo from "@/components/assets/logo"
 import { Button } from "@/components/ui/button"
-import { signOut, useSession } from "next-auth/react"
+import { signOut } from "next-auth/react"
 import Image from "next/image"
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
 import ManageAccess from '@/components/access-manager'
+import { useAppSelector } from '@/hooks'
 
 export default function Home() {
 
-  const { data: session, status } = useSession()
+  const user = useAppSelector(store => store.user)
   const [loading, setLoading] = React.useState<boolean>(false)
   const [name, setName] = React.useState<string>("")
 
@@ -36,15 +37,15 @@ export default function Home() {
         </header>
         <div className='p-4 space-y-8'>
           <div className="flex gap-2 justify-between items-center">
-            <Image priority src={session?.user?.image || "/images/auth-bg-image.jpeg"} alt="User Image" width={32} height={32} className="rounded-full h-8 w-8" />
+            <Image priority src={user.image || "/images/auth-bg-image.jpeg"} alt="User Image" width={32} height={32} className="rounded-full h-8 w-8" />
             <div>
               <div className='flex gap-1'>
                 <Link href={'/details'}>
-                  <p>{session?.user?.name}</p>
+                  <p>{user.name}</p>
                 </Link>
-                <small className='text-[10px] p-1 rounded-full bg-green-500 text-white'>{session?.user.userType}</small>
+                <small className='text-[10px] p-1 rounded-full bg-green-500 text-white'>{user.userType}</small>
               </div>
-              <p className='text-sm text-muted-placeholder'>{session?.user?.email}</p>
+              <p className='text-sm text-muted-placeholder'>{user.email}</p>
             </div>
           </div>
 

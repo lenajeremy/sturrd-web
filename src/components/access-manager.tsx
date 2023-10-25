@@ -5,12 +5,14 @@ import { usePathname, useRouter } from 'next/navigation'
 import * as React from 'react'
 import Lottie from 'lottie-react'
 import loadingAnimation from '@/lotties/loading.json'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { BaseUserDetails } from '@/types'
 
 type ManageAccessProps = {
     children: React.ReactNode,
     allowedRoles: Array<UserTypes> | '*',
     restrictedRoles?: Array<UserTypes>,
-    customRestriction?: (userSession: Session | null, currentPath: string) => boolean,
+    customRestriction?: (userSession: BaseUserDetails | null, currentPath: string) => boolean,
     whileValidatingComponent?: React.ReactNode,
     restrictedAccessComponent?: React.ReactNode,
     redirectOnRestrictionURL?: string
@@ -40,7 +42,8 @@ function getAllowedRoles(a: ManageAccessProps['allowedRoles'], r: ManageAccessPr
 
 function ManageAccess(props: ManageAccessProps) {
 
-    const { data: session, status } = useSession()
+    const { status } = useSession()
+    const user = useAppSelector(store => store.user) 
     const router = useRouter()
     const pathName = usePathname()
 
@@ -58,7 +61,7 @@ function ManageAccess(props: ManageAccessProps) {
     }
 
     if (props.customRestriction) {
-        if (props.customRestriction(session, pathName)) {
+        if (props.customRestriction(user, pathName)) {
             return props.children
         } else {
             if (props.redirectOnRestrictionURL) {
@@ -67,7 +70,7 @@ function ManageAccess(props: ManageAccessProps) {
                 return props.restrictedAccessComponent || <p>You are not allowed to view this page</p>
             }
         }
-    } else if (allowedRoles.includes(session?.user.userType as any)) {
+    } else if (allowedRoles.includes(user.userType as any)) {
         return props.children
     } else {
         if (props.redirectOnRestrictionURL) {

@@ -1,17 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { accountSetupApi } from "@/requests"
-import { appSessionReducer, pageLoaderReducer } from './reducers'
+import { accountSetupApi, userApi } from "@/requests"
+import { userDetailsReducer } from "./reducers"
 
 
 const middlewares = [
-    accountSetupApi.middleware
+    accountSetupApi.middleware,
+    userApi.middleware
 ]
 
 const store = configureStore({
     reducer: {
         [accountSetupApi.reducerPath]: accountSetupApi.reducer,
-        pageLoader: pageLoaderReducer,
-        appSession: appSessionReducer
+        [userApi.reducerPath]: userApi.reducer,
+        user: userDetailsReducer,
     },
     middleware(getDefaultMiddleware) {
         return getDefaultMiddleware().concat(middlewares)

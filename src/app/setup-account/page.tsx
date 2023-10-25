@@ -13,6 +13,9 @@ import { useSetupAccountDetailsMutation } from '@/requests'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ManageAccess from '@/components/access-manager'
+import { useSession } from 'next-auth/react'
+import { useAppDispatch } from '@/hooks'
+import { updateUserDetails } from '@/store/actions'
 
 
 
@@ -31,8 +34,9 @@ const accountTypes = [
 
 const AccountSetupPage = () => {
 
-    const [setupAccount, { isLoading, isError }] = useSetupAccountDetailsMutation()
+    const [setupAccount, { isLoading, isError, isSuccess }] = useSetupAccountDetailsMutation()
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
     const { register, handleSubmit, setValue } = useForm<{
         userType: typeof accountTypes[number]['value'],
@@ -54,11 +58,7 @@ const AccountSetupPage = () => {
                 { description: JSON.stringify(res, null, 3) }
             )
 
-            if (res.data.userType === 'SCHOOL_OWNER') {
-                router.replace('/setup-school')
-            } else {
-                router.replace('/')
-            }
+            dispatch(updateUserDetails(res.data))
 
         } catch (error) {
             toast.error(
@@ -70,16 +70,16 @@ const AccountSetupPage = () => {
 
 
     return (
-        <ManageAccess allowedRoles={['BASE_USER']} redirectOnRestrictionURL='/'>
+        <ManageAccess allowedRoles={['BASE_USER']} redirectOnRestrictionURL={isSuccess ? '/setup-school' : '/'}>
             <div className='flex h-screen'>
-                <div className='w-full md:w-2/5 p-8 md:p-12 grid place-items-center'>
-                    <form onSubmit={handleSubmit(onSubmit)} className='w-full flex justify-center flex-col gap-8'>
+                <div className='w-full md:w-1/2 p-8 md:p-12 grid place-items-center'>
+                    <form onSubmit={handleSubmit(onSubmit)} className='flex justify-center flex-col gap-8 w-[70%] mx-auto'>
                         <div>
                             <h3 className='font-semibold'>Welcome to Sturrd</h3>
                             <p className='text-muted-placeholder'>We&apos;d like to know more about you😊</p>
                         </div>
 
-                        <div className='w-full md:w-[80%] flex flex-col gap-4'>
+                        <div className='w-full flex flex-col gap-4'>
                             <div className='space-y-1'>
                                 <Label>First Name</Label>
                                 <Input placeholder='Enter your first name' {...register('firstName')} />
@@ -101,14 +101,12 @@ const AccountSetupPage = () => {
                                 />
                             </div>
                         </div>
-                        <Button loading={isLoading} type='submit'>Next</Button>
+                        <Button className='w-full' loading={isLoading} type='submit'>Next</Button>
                     </form>
                 </div >
-                <div className='hidden md:block w-3/5 relative p-12' style={{ backgroundImage: 'linear-gradient(180deg, #2D2D2D 34.99%, #575859 60.8%, #7C7C7C 100%)' }}>
+                <div className='hidden md:block w-1/2 relative p-12' style={{ backgroundImage: 'linear-gradient(180deg, #2D2D2D 34.99%, #575859 60.8%, #7C7C7C 100%)' }}>
                     <Image src={'/images/dashboard 1.png'} width={700} height={500} alt='screenshot of sturrd dashboard' className='object-contain absolute right-0 top-1/2 -translate-y-1/2' />
                 </div>
-
-                <Link href='/'>Back to Main App</Link>
             </div>
         </ManageAccess>
     )

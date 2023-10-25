@@ -1,2 +1,1 @@
-export * from '../reducers/app-session'
-export * from '../reducers/pageloader'
+export * from '../reducers/user-details'
