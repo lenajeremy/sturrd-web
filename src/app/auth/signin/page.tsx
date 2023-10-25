@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import { toast } from 'sonner'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import SturrdLogo from '@/components/assets/logo'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -20,7 +20,6 @@ function Signin() {
 
     const { register, handleSubmit, setValue, watch } = useForm<SignInFormValues>()
     const [loading, setLoading] = React.useState<boolean>(false)
-    const {status} = useSession()
 
     const acceptsTerms = watch('acceptTerms')
 
@@ -49,7 +48,7 @@ function Signin() {
 
     return (
         <div className='flex h-screen'>
-            <div className='hidden md:block md:w-[60%]  h-full relative'>
+            <div className='hidden md:block md:w-[50%] lg:w-[60%] h-full relative'>
                 <Image
                     width={1000}
                     height={1000}
@@ -61,11 +60,10 @@ function Signin() {
                 <div className='image-container p-8 bg-[#121212]/80 h-full w-full flex flex-col justify-between pb-20 text-white'>
                     <SturrdLogo color={"white"} />
 
-
                     <div>
-                        <div className='space-y-4'>
-                            <h1 className='w-2/5'>School Management Made Simple</h1>
-                            <p className='text-[#CACACA] w-[60%] text-lg'>Simplify School Management with Sturrd. Streamline tasks, enhance communication, and enjoy a smarter school experience.</p>
+                        <div className='space-y-4 lg:max-w-[500px]'>
+                            <h1 className='md:w-4/5 text-4xl'>School Management Made Simple</h1>
+                            <p className='text-[#CACACA] md:w-full md:text-base lg:text-lg lg:w-[80%]'>Simplify School Management with Sturrd. Streamline tasks, enhance communication, and enjoy a smarter school experience.</p>
                         </div>
                         <div className='flex gap-2 mt-8'>
                             <div className='w-[12px] h-[12px] rounded-full bg-[#606060] bg-opacity-90 cursor-pointer' />
@@ -78,13 +76,13 @@ function Signin() {
                 </div>
             </div>
 
-            <div className='w-full md:w-[40%] h-full flex flex-col justify-center gap-12 p-8'>
-                <div className='space-y-3 flex items-center flex-col md:items-start'>
+            <div className='w-[480px] mx-auto md:w-[50%] lg:w-[40%] lg:mx-6 h-full flex flex-col justify-center gap-12 p-8'>
+                <div className='space-y-3 flex items-center flex-col md:items-start lg:w-[80%]'>
                     <SturrdLogo size={84} color='black' />
-                    <p className='text-center md:text-left w-5/6 md:w-3/4 text-muted-foreground'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
+                    <p className='text-center text-sm text-muted-foreground md:w-full md:text-left'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
                 </div>
 
-                <form className='w-full md:w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
+                <form className='w-full md:w-full lg:w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
                     <div className='space-y-1'>
                         <Label htmlFor='email'>Email</Label>
                         <Input placeholder='Enter your email address' type='email' {...register("email", { required: true })} />
@@ -95,7 +93,6 @@ function Signin() {
                     </div>
                     <Button disabled={loading || !acceptsTerms} loading={loading} className='w-full mt-4'>Continue</Button>
                 </form>
-
             </div>
         </div>
     )

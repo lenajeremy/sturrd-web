@@ -5,8 +5,8 @@ const secretKey = process.env.MAILJET_SECRET_KEY
 
 const mailjet = Mailjet.apiConnect(apiKey || '', secretKey || '')
 
-export async function sendEmail(emailAddress: string, textContent: string, htmlContent: string, url: string) {
-    
+export async function sendEmail(emailAddress: string, textContent: string, htmlContent: string, url: string): Promise<any> {
+
     try {
         const request = await mailjet
             .post('send', { version: 'v3.1' })
@@ -30,12 +30,9 @@ export async function sendEmail(emailAddress: string, textContent: string, htmlC
                 ]
             })
 
-            if (request.response.status === 200) {
-                console.log("Message sent successfully")
-            }
+        return request.response
 
     } catch (error) {
-        // @ts-ignore
-        console.log(error.statusCode)
+        return error
     }
 }

@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useSetupAccountDetailsMutation } from '@/requests'
+import Link from 'next/link'
 
 
 
@@ -52,7 +53,6 @@ const AccountSetupPage = () => {
 
 
         } catch (error) {
-            console.log(error)
             toast.error(
                 "Error while setting account type",
                 { description: JSON.stringify(error, null, 3) }
@@ -98,6 +98,8 @@ const AccountSetupPage = () => {
             <div className='hidden md:block w-3/5 relative p-12' style={{ backgroundImage: 'linear-gradient(180deg, #2D2D2D 34.99%, #575859 60.8%, #7C7C7C 100%)' }}>
                 <Image src={'/images/dashboard 1.png'} width={700} height={500} alt='screenshot of sturrd dashboard' className='object-contain absolute right-0 top-1/2 -translate-y-1/2' />
             </div>
+
+            <Link href='/'>Back to Main App</Link>
         </div >
     )
 }

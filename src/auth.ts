@@ -15,7 +15,14 @@ const config: AuthOptions = {
             options: {
                 type: "email",
                 async sendVerificationRequest(params) {
-                    await sendEmail(params.identifier, "", "", params.url)
+                    const res = await sendEmail(params.identifier, "", "", params.url)
+
+                    console.log(params.url)
+
+                    if (res.status !== 200) {
+                        throw new Error("Unable to send verification email")
+                    }
+
                 },
             }
         }

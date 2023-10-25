@@ -53,9 +53,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           disabled={loading}
           {...props}
         >
-          {loading ? (
+          <span className={`${loading ? "opacity-0" : "opacity-100"}`}>
+            {children}
+          </span>
+
+          {loading && (
             <Lottie animationData={loadingAnimation} loop={true} className='h-20 w-20 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none' />
-          ) : children}
+          )}
         </Comp>
       </div >
     )

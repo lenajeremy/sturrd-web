@@ -10,23 +10,6 @@ import { Button } from '@/components/ui/button'
 
 
 const CreateSchoolPage = () => {
-    // const setupSchool = async () => {
-    //     setLoading(true)
-
-    //     const res = await fetch('/api/school/setup', {
-    //         method: "POST", body: JSON.stringify({
-    //             shortName: "golet",
-    //             longName: "God's Elect Academy",
-    //             address: "17, Lubokun street, Ikola Odunsi, Ipaja",
-    //             city: "Alimosho",
-    //             state: "Lagos"
-    //         })
-    //     })
-
-    //     const data = await res.json()
-    //     console.log(data)
-    //     setLoading(false)
-    // }
 
     const [setupSchool, { isLoading, isError }] = useSetupSchoolMutation()
 

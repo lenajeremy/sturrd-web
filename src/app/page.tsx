@@ -2,16 +2,17 @@
 import * as React from 'react'
 import SturrdLogo from "@/components/assets/logo"
 import { Button } from "@/components/ui/button"
-import { signOut, useSession } from "next-auth/react"
+import { signOut } from "next-auth/react"
 import Image from "next/image"
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
+import { useAppSession } from '@/hooks'
 
 export default function Home() {
 
-  const { data: session, status } = useSession()
+  const { data: session, status } = useAppSession()
   const [loading, setLoading] = React.useState<boolean>(false)
   const [name, setName] = React.useState<string>("")
 
@@ -53,6 +54,8 @@ export default function Home() {
 
         <Button variant={'secondary'} size={'sm'} onClick={() => signOut()}>Signout</Button> <br />
       </div>
+
+      <Link href = '/setup-account'>Set up Account</Link>
     </main >
   )
 }
