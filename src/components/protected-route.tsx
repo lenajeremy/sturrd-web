@@ -2,44 +2,17 @@
 import * as React from 'react'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
-import { useAppSession } from '@/hooks'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
-    const pathName = usePathname()
-    console.log(pathName)
-
-    const { status, data: session } = useAppSession({
+    useSession({
         onUnauthenticated: () => {
-            console.log('you are not authenticated')
-            pathName !== '/auth/signin' ? router.replace('/auth/signin') : null
+            router.replace('/auth/signin')
         },
         required: true
     })
 
-    // const loading = useAppSelector(store => store.pageLoader)
     const router = useRouter()
-    // const pathName = usePathname()
-
-    // React.useEffect(() => {
-
-        // if (status === 'authenticated') {
-        //     if (pathName === '/auth/signin') {
-        //         router.replace('/')
-        //     } else if (pathName === '/setup-account' && session.user.userType !== UserTypes.BASE_USER) {
-        //         router.replace('/')
-        //     }
-        // } else if (status === 'unauthenticated') {
-        //     router.replace('/auth/signin')
-        // }
-
-
-        // if (session?.user.userType === UserTypes.BASE_USER) {
-        //     router.replace('/setup-account')
-        // }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [status, pathName, session])
 
     return (
         <div className='relative'>

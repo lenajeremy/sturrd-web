@@ -36,21 +36,21 @@ model Session {
 }
 
 model User {
-  id                  String        @id @default(cuid())
-  name                String?
-  firstName           String?
-  lastName            String?
-  email               String?       @unique
-  emailVerified       DateTime?
-  userType            UserTypes     @default(BASE_USER)
-  image               String?
-  accounts            Account[]
-  sessions            Session[]
-  schoolAdmin         SchoolAdmin[]
-  parent              Parent?
-  student             Student?
-  staff               Staff?
-  schoolOwner         SchoolOwner?
+  id            String        @id @default(cuid())
+  name          String?
+  firstName     String?
+  lastName      String?
+  email         String?       @unique
+  emailVerified DateTime?
+  userType      UserTypes     @default(BASE_USER)
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  schoolAdmin   SchoolAdmin[]
+  parent        Parent?
+  student       Student?
+  staff         Staff?
+  schoolOwner   SchoolOwner?
 }
 
 model VerificationToken {
@@ -62,29 +62,30 @@ model VerificationToken {
 }
 
 model School {
-  id           String        @id @default(cuid())
-  longName     String
-  shortName    String?
-  address      String?
-  city         String?
-  state        String?
-  admins       SchoolAdmin[]
-  students     Student[]
-  parents      Parent[]
-  classes      Class[]
-  courses      Course[]
-  staffs       Staff[]
-  owner        SchoolOwner   @relation(fields: [ownerId], references: [id])
-  ownerId      String        @unique
+  id        String        @id @default(cuid())
+  longName  String
+  shortName String?
+  address   String?
+  city      String?
+  state     String?
+  admins    SchoolAdmin[]
+  students  Student[]
+  parents   Parent[]
+  classes   Class[]
+  courses   Course[]
+  staffs    Staff[]
+  owner     SchoolOwner   @relation(fields: [ownerId], references: [id])
+  ownerId   String        @unique
 }
 
 // Typically, this is a school owner (or a super admin)
 // This is the person who creates the school and can add other admins
 model SchoolOwner {
-  id     String  @id @default(cuid())
-  user   User    @relation(fields: [userId], references: [id])
-  userId String  @unique
-  school School?
+  id               String  @id @default(cuid())
+  user             User    @relation(fields: [userId], references: [id])
+  userId           String  @unique
+  hasUpdatedSchool Boolean @default(false)
+  school           School?
 }
 
 model SchoolAdmin {

@@ -67,6 +67,7 @@ CREATE TABLE "School" (
 CREATE TABLE "SchoolOwner" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "hasUpdatedSchool" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "SchoolOwner_pkey" PRIMARY KEY ("id")
 );

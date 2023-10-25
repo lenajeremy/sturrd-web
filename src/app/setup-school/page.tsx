@@ -7,6 +7,7 @@ import { Select } from '@/components/ui/select'
 import { useSetupSchoolMutation } from '@/requests'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import ManageAccess from '@/components/access-manager'
 
 
 const CreateSchoolPage = () => {
@@ -31,21 +32,23 @@ const CreateSchoolPage = () => {
     const { register, handleSubmit, setValue } = useForm<SchoolObject>()
 
     return (
-        <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Input  {...register('longName', { required: true })} />
-                <Input  {...register('shortName', { required: true })} />
-                <Input {...register('address', { required: true })} />
-                <Input {...register('city', { required: true })} />
-                <Select
-                    options={['Lagos', "Los Angeles"]}
-                    renderLabel={(e) => e}
-                    renderValue={e => e}
-                    onChange={(e) => setValue('state', e)}
-                />
-                <Button type='submit' loading={isLoading}>Submit</Button>
-            </form>
-        </div>
+        <ManageAccess allowedRoles={['SCHOOL_OWNER', 'SCHOOL_ADMIN']} redirectOnRestrictionURL='/'>
+            <div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Input  {...register('longName', { required: true })} />
+                    <Input  {...register('shortName', { required: true })} />
+                    <Input {...register('address', { required: true })} />
+                    <Input {...register('city', { required: true })} />
+                    <Select
+                        options={['Lagos', "Los Angeles"]}
+                        renderLabel={(e) => e}
+                        renderValue={e => e}
+                        onChange={(e) => setValue('state', e)}
+                    />
+                    <Button type='submit' loading={isLoading}>Submit</Button>
+                </form>
+            </div>
+        </ManageAccess>
     )
 }
 

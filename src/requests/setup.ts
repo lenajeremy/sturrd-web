@@ -15,7 +15,18 @@ type SchoolSetupFormBody = {
 }
 
 type AccountSetupResponse = {
-
+    message: string,
+    data: {
+        id: string,
+        name: string,
+        firstName: string,
+        lastName: string,
+        email: string,
+        emailVerified: string,
+        userType: UserTypes,
+        image: string | null
+    },
+    errors: Array<any>
 }
 
 type SchoolSetupResponse = {}

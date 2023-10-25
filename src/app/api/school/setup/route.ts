@@ -41,7 +41,12 @@ export async function POST(request: NextRequest) {
                     shortName: data.shortName,
                     address: data.address,
                     city: data.city,
-                    state: data.state
+                    state: data.state,
+                    owner: {
+                        update: {
+                            hasUpdatedSchool: true
+                        }
+                    }
                 }
             })
 
