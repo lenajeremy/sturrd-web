@@ -21,7 +21,6 @@ const CreateSchoolPage = () => {
     const onSubmit: SubmitHandler<SchoolObject> = async (values) => {
         try {
             const data = await setupSchool(values).unwrap()
-            console.log(data)
 
             toast.success("School created successfully", {
                 description: JSON.stringify(data, null, 3)

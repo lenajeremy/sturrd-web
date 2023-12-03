@@ -3,14 +3,18 @@ import * as UserTypes from "@/types/user-types";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 
-const initialState: UserTypes.ParentDetails | UserTypes.SchoolOwnerDetails | UserTypes.StudentDetails | UserTypes.TeacherDetails = {
+// for now, I'm restricting this to just school owners
+const initialState: UserTypes.SchoolOwnerDetails = {
     name: '',
     firstName: '',
     lastName: '',
     id: '',
     email: '',
     emailVerified: new Date().toISOString(),
-    userType: 'BASE_USER'
+    userType: "SCHOOL_OWNER",
+    schoolName: "",
+    schoolId: "",
+    hasUpdatedSchool: false
 }
 
 type NotRequired<T> = {

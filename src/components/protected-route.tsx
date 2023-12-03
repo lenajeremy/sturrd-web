@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
     React.useEffect(() => {
         (async function() {
-            const dat = await getUserDetails(null, true).unwrap()
+            const dat = await getUserDetails(undefined, true).unwrap()
             dispatch(updateUserDetails(dat.data))
         })()
 

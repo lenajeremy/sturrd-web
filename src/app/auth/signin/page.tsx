@@ -85,7 +85,7 @@ function Signin() {
                 <form className='w-full md:w-full lg:w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
                     <div className='space-y-1'>
                         <Label htmlFor='email'>Email</Label>
-                        <Input placeholder='Enter your email address' type='email' {...register("email", { required: true })} />
+                        <Input placeholder='Enter your email address' id="email" type='email' {...register("email", { required: true })} />
                     </div>
                     <div className='flex gap-2 items-start'>
                         <Checkbox onCheckedChange={(e) => setValue('acceptTerms', Boolean(e))} className='mt-1' id='acceptTerms' />

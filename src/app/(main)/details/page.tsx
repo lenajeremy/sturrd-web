@@ -2,7 +2,6 @@
 import * as React from 'react'
 import Image from 'next/image'
 import ManageAccess from '@/components/access-manager'
-import { useSession } from 'next-auth/react'
 import { useAppSelector } from '@/hooks'
 
 export default function DetailsPage() {

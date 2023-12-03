@@ -6,7 +6,7 @@ export async function handleServerSession(onAuthenticated: (session: Session) =>
 
     const session = await getServerSession(config)
     
-    await sleep(1)
+    // await sleep(1)
 
     if (!session) {
         if (onUnauthenticated) {

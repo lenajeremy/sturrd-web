@@ -19,6 +19,7 @@ const config: AuthOptions = {
 
                     console.log(params.url)
 
+
                     if (res.status !== 200) {
                         throw new Error("Unable to send verification email")
                     }
