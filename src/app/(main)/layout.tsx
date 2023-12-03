@@ -6,7 +6,7 @@ function AppLayout({ children }: { children: ReactNode }) {
     return (
         <div className="relative">
             <Sidebar />
-            <main className='ml-[300px]'>
+            <main className='lg:ml-[300px]'>
                 <Header />
                 <div className = 'p-4'>
                     {children}

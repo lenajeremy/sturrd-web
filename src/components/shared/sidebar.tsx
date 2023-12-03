@@ -18,7 +18,7 @@ const Sidebar = () => {
     const { firstName, lastName, userType } = useAppSelector(store => store.user)
 
     return (
-        <div className='fixed h-full top-0 w-[300px] p-8 bg-foreground text-background text-[15px]'>
+        <div className='fixed h-full top-0 w-[300px] p-8 bg-foreground text-background text-[15px] hidden lg:block'>
             <SturrdLogo size={80} color="white" />
 
             <div className='flex flex-col h-full pt-[100px] justify-between pb-[20px]'>

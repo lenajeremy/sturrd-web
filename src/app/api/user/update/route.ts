@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
                 image: "https://images.unsplash.com/photo-1696792995093-cf7e39a97349"
             }
         })
-
+ 
         return NextResponse.json({ data: res, message: "Successfully updated user" }, { status: 200 })
     } catch (error) {
         return NextResponse.json({ data: String(error), message: "Could not update user" }, { status: 400 })

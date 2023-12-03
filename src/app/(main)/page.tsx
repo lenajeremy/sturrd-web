@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 import ManageAccess from '@/components/access-manager'
 import { useAppSelector } from '@/hooks'
-import { Sidebar } from '@/components/shared'
+import { Sidebar, UserImage } from '@/components/shared'
 
 export default function Home() {
 
@@ -32,7 +32,6 @@ export default function Home() {
     <ManageAccess allowedRoles="*" restrictedRoles={['BASE_USER']} redirectOnRestrictionURL='/setup-account'>
       <div className='p-4 space-y-8'>
         <div className="flex gap-2 justify-between items-center">
-          <Image priority src={user.image || "/images/auth-bg-image.jpeg"} alt="User Image" width={32} height={32} className="rounded-full h-8 w-8" />
           
         </div>
 
