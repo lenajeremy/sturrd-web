@@ -1,19 +1,19 @@
 'use client'
 
 import { SessionProvider } from "next-auth/react";
-import ProtectedRoute from "@/components/protected-route";
 import { Provider as StoreProvider } from "react-redux";
+import { CookiesProvider } from 'react-cookie'
 import store from '@/store'
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
-        <StoreProvider store={store}>
-            <SessionProvider>
-                <ProtectedRoute>
+        <CookiesProvider>
+            <StoreProvider store={store}>
+                <SessionProvider>
                     {children}
-                </ProtectedRoute>
-            </SessionProvider>
-        </StoreProvider>
+                </SessionProvider>
+            </StoreProvider>
+        </CookiesProvider>
     )
 }
 

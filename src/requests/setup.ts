@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react'
 import { UserTypes } from '@prisma/client'
-import { BASE_URL } from '@/lib/constants'
+import { API_URL } from '@/lib/constants'
 
 
 type AccountSetupFormBody = {
@@ -33,7 +33,7 @@ type SchoolSetupResponse = {}
 
 const accountSetupApi = createApi({
     reducerPath: 'accountsetupapi',
-    baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+    baseQuery: fetchBaseQuery({ baseUrl: API_URL }),
     endpoints: builder => ({
         setupAccountDetails: builder.mutation<AccountSetupResponse, AccountSetupFormBody>({
             query: (args) => {

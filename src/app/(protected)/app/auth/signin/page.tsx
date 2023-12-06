@@ -3,7 +3,6 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { signIn } from 'next-auth/react'
 import SturrdLogo from '@/components/assets/logo'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -48,14 +47,15 @@ function Signin() {
 
     return (
         <div className='flex h-screen'>
-            <div className='hidden md:block md:w-[50%] lg:w-[60%] h-full relative'>
-                <Image
+            {/* <div className='hidden md:block md:w-[50%] lg:w-[60%] h-full relative'> */}
+            <div className='hidden md:w-[50%] lg:w-[60%] h-full relative'>
+                {/* <Image
                     width={1000}
                     height={1000}
                     src={'/images/auth-bg-image.jpeg'}
                     alt="Woman talking in a class"
                     className='absolute h-full w-full -z-10 object-cover object-[-25 0px] brightness-50 contrast-125'
-                />
+                /> */}
 
                 <div className='image-container p-8 bg-[#121212]/80 h-full w-full flex flex-col justify-between pb-20 text-white'>
                     <SturrdLogo color={"white"} />
@@ -76,10 +76,12 @@ function Signin() {
                 </div>
             </div>
 
-            <div className='w-[480px] mx-auto md:w-[50%] lg:w-[40%] lg:mx-6 h-full flex flex-col justify-center gap-12 p-8'>
-                <div className='space-y-3 flex items-center flex-col md:items-start lg:w-[80%]'>
+            {/* <div className='w-[480px] mx-auto md:w-[50%] lg:w-[40%] lg:mx-6 h-full flex flex-col justify-center gap-12 p-8'> */}
+            <div className='w-[480px] mx-auto md:w-[50%] lg:w-[35%] h-full flex flex-col justify-center gap-12 p-8'>
+                {/* <div className='space-y-3 flex items-center flex-col md:items-start lg:w-[80%]'> */}
+                <div className='space-y-3 flex items-center flex-col lg:w-[80%]'>
                     <SturrdLogo size={84} color='black' />
-                    <p className='text-center text-sm text-muted-foreground md:w-full md:text-left'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
+                    <p className='text-center text-sm text-muted-foreground'>Sturrd enhances education with streamlined school management for students, teachers, parents, and administrator.</p>
                 </div>
 
                 <form className='w-full md:w-full lg:w-[80%] flex flex-col gap-3' onSubmit={handleSubmit(handleLogin)}>
